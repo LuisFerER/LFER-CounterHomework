@@ -4,12 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
     private int mCount = 0;
     private TextView mShowCount;
+    private Button btnCount;
+    private TextView editText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,25 +20,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // Initialize all the view variables.
         mShowCount = (TextView) findViewById(R.id.txtCount);
+        btnCount = (Button) findViewById(R.id.btnCount);
+        editText = (TextView) findViewById(R.id.editText);
 
         // Restore the state.
         if (savedInstanceState != null) {
-            boolean isVisible =
-                    savedInstanceState.getBoolean("reply_visible");
-            if (isVisible) {
-                mShowCount.setVisibility(View.VISIBLE);
-                mShowCount.setText(savedInstanceState.getString("reply_text"));
-                mShowCount.setVisibility(View.VISIBLE);
-            }
+            int count = savedInstanceState.getInt("mCount_value");
+            mCount = count;
+            mShowCount.setText(Integer.toString(count));
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (mShowCount.getVisibility() == View.VISIBLE) {
-            outState.putBoolean("reply_visible", true);
-            outState.putString("reply_text",mShowCount.getText().toString());
+        if (mCount > 0) {
+            outState.putInt("mCount_value", mCount);
         }
     }
 
